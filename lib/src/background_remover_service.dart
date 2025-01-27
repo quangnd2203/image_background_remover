@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:ui' as ui;
 
@@ -125,5 +126,36 @@ class BackgroundRemoverService {
       floats[2 * pixelCount + i] = rgbaBytes[i * 4 + 2] / 255.0; // Blue
     }
     return floats;
+  }
+
+  Future<ui.Image> _applyMaskToOriginalSizeImage(
+      ui.Image image, List resizedMask) async {
+    final byteData = await image.toByteData(format: ui.ImageByteFormat.rawRgba);
+    if (byteData == null) throw Exception("Failed to get image ByteData");
+
+    final rgbaBytes = byteData.buffer.asUint8List();
+    final pixelCount = image.width * image.height;
+    final outRgbaBytes = Uint8List(4 * pixelCount);
+
+    for (int y = 0; y < image.height; y++) {
+      for (int x = 0; x < image.width; x++) {
+        final i = y * image.width + x;
+        final maskValue = (resizedMask[y][x] * 255).clamp(0, 255).toInt();
+
+        outRgbaBytes[i * 4] = rgbaBytes[i * 4]; // Red
+        outRgbaBytes[i * 4 + 1] = rgbaBytes[i * 4 + 1]; // Green
+        outRgbaBytes[i * 4 + 2] = rgbaBytes[i * 4 + 2]; // Blue
+        outRgbaBytes[i * 4 + 3] = maskValue; // Alpha
+      }
+    }
+
+    final completer = Completer<ui.Image>();
+    ui.decodeImageFromPixels(
+        outRgbaBytes, image.width, image.height, ui.PixelFormat.rgba8888,
+        (ui.Image img) {
+      completer.complete(img);
+    });
+
+    return completer.future;
   }
 }
