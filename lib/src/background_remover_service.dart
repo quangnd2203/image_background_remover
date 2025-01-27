@@ -15,23 +15,38 @@ class BackgroundRemoverService {
 
   static BackgroundRemoverService get instance => _instance;
 
+  // The ONNX session used for inference.
   OrtSession? _session;
 
+  /// Initializes the ONNX environment and creates a session.
   Future<void> initializeOrt() async {
     try {
+      /// Initialize the ONNX runtime environment.
       OrtEnv.instance.init();
+
+      /// Create the ONNX session.
       await _createSession();
     } catch (e) {
       log(e.toString());
     }
   }
 
+  /// Creates an ONNX session using the U^2-Net model file from assets.
   Future<void> _createSession() async {
     try {
+      /// Session configuration options.
       final sessionOptions = OrtSessionOptions();
+
+      /// Path to the ONNX model file.
       const assetFileName = 'assets/u2netp.onnx';
+
+      /// Load the model as a raw asset.
       final rawAssetFile = await rootBundle.load(assetFileName);
+
+      /// Convert the asset to a byte array.
       final bytes = rawAssetFile.buffer.asUint8List();
+
+      /// Create the ONNX session.
       _session = OrtSession.fromBuffer(bytes, sessionOptions);
       if (kDebugMode) {
         log('ONNX session created successfully.');
@@ -43,35 +58,38 @@ class BackgroundRemoverService {
     }
   }
 
+  /// Removes the background from an image.
+  ///
+  /// - [imageBytes]: The input image as a byte array.
+  /// - Returns: A [ui.Image] with the background removed.
   Future<ui.Image> removeBg(Uint8List imageBytes) async {
     if (_session == null) {
       throw Exception("ONNX session not initialized");
     }
 
-    /// Decode image and resize
+    /// Decode the input image and resize it to the required dimensions.
     final originalImage = await decodeImageFromList(imageBytes);
     log('Original image size: ${originalImage.width}x${originalImage.height}');
     final resizedImage = await _resizeImage(originalImage, 320, 320);
 
-    /// Convert image to tensor
+    /// Convert the resized image into a tensor format required by the ONNX model.
     final rgbFloats = await _imageToFloatTensor(resizedImage);
     final inputTensor = OrtValueTensor.createTensorWithDataList(
       Float32List.fromList(rgbFloats),
       [1, 3, 320, 320],
     );
 
-    /// Prepare inputs and run inference
+    /// Prepare the inputs and run inference on the ONNX model.
     final inputs = {'input.1': inputTensor};
     final runOptions = OrtRunOptions();
     final outputs = await _session!.runAsync(runOptions, inputs);
     inputTensor.release();
     runOptions.release();
 
-    /// Convert output tensor to an image
+    /// Process the output tensor and generate the final image with the background removed.
     final outputTensor = outputs?[0]?.value;
     if (outputTensor is List) {
       final mask = outputTensor[0][0];
-
       final resizedMask =
           resizeMask(mask, originalImage.width, originalImage.height);
       return _applyMaskToOriginalSizeImage(originalImage, resizedMask);
@@ -80,6 +98,7 @@ class BackgroundRemoverService {
     }
   }
 
+  /// Resizes the input image to the specified dimensions.
   Future<ui.Image> _resizeImage(
       ui.Image image, int targetWidth, int targetHeight) async {
     final recorder = ui.PictureRecorder();
@@ -96,6 +115,7 @@ class BackgroundRemoverService {
     return picture.toImage(targetWidth, targetHeight);
   }
 
+  /// Resizes the mask to match the original image dimensions.
   List resizeMask(List mask, int originalWidth, int originalHeight) {
     final resizedMask = List.generate(
       originalHeight,
@@ -112,6 +132,7 @@ class BackgroundRemoverService {
     return resizedMask;
   }
 
+  /// Converts an image into a floating-point tensor.
   Future<List<double>> _imageToFloatTensor(ui.Image image) async {
     final byteData = await image.toByteData(format: ui.ImageByteFormat.rawRgba);
     if (byteData == null) throw Exception("Failed to get image ByteData");
@@ -119,7 +140,7 @@ class BackgroundRemoverService {
     final pixelCount = image.width * image.height;
     final floats = List<double>.filled(pixelCount * 3, 0);
 
-    // Normalization of mask
+    /// Extract and normalize RGB channels.
     for (int i = 0; i < pixelCount; i++) {
       floats[i] = rgbaBytes[i * 4] / 255.0; // Red
       floats[pixelCount + i] = rgbaBytes[i * 4 + 1] / 255.0; // Green
@@ -128,6 +149,7 @@ class BackgroundRemoverService {
     return floats;
   }
 
+  /// Applies the mask to the original image and generates the final output.
   Future<ui.Image> _applyMaskToOriginalSizeImage(
       ui.Image image, List resizedMask) async {
     final byteData = await image.toByteData(format: ui.ImageByteFormat.rawRgba);
