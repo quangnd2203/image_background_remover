@@ -78,4 +78,36 @@ class BackgroundRemoverService {
       throw Exception('Unexpected output format from ONNX model.');
     }
   }
+
+  Future<ui.Image> _resizeImage(
+      ui.Image image, int targetWidth, int targetHeight) async {
+    final recorder = ui.PictureRecorder();
+    final canvas = Canvas(recorder);
+    final paint = Paint();
+
+    final srcRect =
+        Rect.fromLTWH(0, 0, image.width.toDouble(), image.height.toDouble());
+    final dstRect =
+        Rect.fromLTWH(0, 0, targetWidth.toDouble(), targetHeight.toDouble());
+    canvas.drawImageRect(image, srcRect, dstRect, paint);
+
+    final picture = recorder.endRecording();
+    return picture.toImage(targetWidth, targetHeight);
+  }
+
+  List resizeMask(List mask, int originalWidth, int originalHeight) {
+    final resizedMask = List.generate(
+      originalHeight,
+      (_) => List.filled(originalWidth, 0.0),
+    );
+
+    for (int y = 0; y < originalHeight; y++) {
+      for (int x = 0; x < originalWidth; x++) {
+        final scaledX = x * 320 ~/ originalWidth;
+        final scaledY = y * 320 ~/ originalHeight;
+        resizedMask[y][x] = mask[scaledY][scaledX];
+      }
+    }
+    return resizedMask;
+  }
 }
