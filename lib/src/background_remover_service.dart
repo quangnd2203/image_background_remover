@@ -19,6 +19,8 @@ class BackgroundRemoverService {
   OrtSession? _session;
 
   /// Initializes the ONNX environment and creates a session.
+  ///
+  /// This method should be called once before using the [removeBg] method.
   Future<void> initializeOrt() async {
     try {
       /// Initialize the ONNX runtime environment.
@@ -31,7 +33,7 @@ class BackgroundRemoverService {
     }
   }
 
-  /// Creates an ONNX session using the U^2-Net model file from assets.
+  /// Creates an ONNX session using the model from assets.
   Future<void> _createSession() async {
     try {
       /// Session configuration options.
