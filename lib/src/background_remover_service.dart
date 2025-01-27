@@ -110,4 +110,20 @@ class BackgroundRemoverService {
     }
     return resizedMask;
   }
+
+  Future<List<double>> _imageToFloatTensor(ui.Image image) async {
+    final byteData = await image.toByteData(format: ui.ImageByteFormat.rawRgba);
+    if (byteData == null) throw Exception("Failed to get image ByteData");
+    final rgbaBytes = byteData.buffer.asUint8List();
+    final pixelCount = image.width * image.height;
+    final floats = List<double>.filled(pixelCount * 3, 0);
+
+    // Normalization of mask
+    for (int i = 0; i < pixelCount; i++) {
+      floats[i] = rgbaBytes[i * 4] / 255.0; // Red
+      floats[pixelCount + i] = rgbaBytes[i * 4 + 1] / 255.0; // Green
+      floats[2 * pixelCount + i] = rgbaBytes[i * 4 + 2] / 255.0; // Blue
+    }
+    return floats;
+  }
 }
