@@ -1,10 +1,10 @@
 name: flutter_background_remover
 description: "A new Flutter package project."
 version: 0.0.1
-homepage:
+homepage: https://github.com/Netesh5/flutter_background_remover/tree/main
 
 environment:
-  sdk: ^3.5.4
+  sdk: '>=3.2.0 <4.0.0'
   flutter: ">=1.17.0"
 
 dependencies:

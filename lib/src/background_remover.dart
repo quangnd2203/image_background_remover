@@ -7,13 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:onnxruntime/onnxruntime.dart';
 
-class BackgroundRemoverService {
-  BackgroundRemoverService._internal();
+class BackgroundRemover {
+  BackgroundRemover._internal();
 
-  static final BackgroundRemoverService _instance =
-      BackgroundRemoverService._internal();
+  static final BackgroundRemover _instance = BackgroundRemover._internal();
 
-  static BackgroundRemoverService get instance => _instance;
+  static BackgroundRemover get instance => _instance;
 
   // The ONNX session used for inference.
   OrtSession? _session;
