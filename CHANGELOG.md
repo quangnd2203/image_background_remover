@@ -1,3 +1,8 @@
+## 0.0.5
+
+### Fix
+- Minor bug fixes
+
 ## 0.0.4
 
 ### Fix
