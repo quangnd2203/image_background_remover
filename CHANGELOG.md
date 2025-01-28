@@ -1,3 +1,15 @@
 ## 0.0.1
 
-* TODO: Describe initial release.
+### Added
+- Initial release of the **Background Remover Service** Flutter package.
+- ONNX Runtime integration for background removal using the `onnx` model.
+- Functions to initialize ONNX session:
+  - `initializeOrt()`: Initialize the ONNX environment and session.
+- Image processing capabilities:
+  - `removeBg(Uint8List imageBytes)`: Removes the background from an input image and returns the image with a transparent background.
+  - `_resizeImage()`: Resizes an image to 320x320 for ONNX model compatibility.
+  - `_imageToFloatTensor()`: Converts RGBA image data into a normalized float tensor for model input.
+  - `_applyMaskToOriginalSizeImage()`: Applies the generated mask back to the original image size.
+- Utility methods:
+  - `resizeMask()`: Resizes the ONNX output mask to match the original image dimensions.
+- Designed for cross-platform support (iOS, Android, Web, and Desktop).
