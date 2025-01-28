@@ -1,3 +1,8 @@
+## 0.0.4
+
+### Fix
+- Solved ONNX session creation error
+
 ## 0.0.3
 
 ### Added
