@@ -5,6 +5,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_background_remover/assets.dart';
 import 'package:onnxruntime/onnxruntime.dart';
 
 class BackgroundRemover {
@@ -38,12 +39,8 @@ class BackgroundRemover {
       /// Session configuration options.
       final sessionOptions = OrtSessionOptions();
 
-      /// Path to the ONNX model file.
-      const assetFileName =
-          '/Users/neteshpaudel/Projects/flutter_background_remover/assets/model.onnx';
-
       /// Load the model as a raw asset.
-      final rawAssetFile = await rootBundle.load(assetFileName);
+      final rawAssetFile = await rootBundle.load(Assets.modelPath);
 
       /// Convert the asset to a byte array.
       final bytes = rawAssetFile.buffer.asUint8List();
