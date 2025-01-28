@@ -1,3 +1,8 @@
+## 0.0.2
+
+### Fix
+- Removed incompatible platform support.
+
 ## 0.0.1
 
 ### Added

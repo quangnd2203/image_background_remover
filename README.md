@@ -7,9 +7,9 @@ A Flutter package that removes the background from images using an ONNX model. T
 ## 🌟 Features
 
 - Remove the background from images with high accuracy.
-- Completely offline
-- Lightweight and efficient implementation.
-- Easy integration with your Flutter project.
+- Works entirely offline, ensuring privacy and reliability.  
+- Lightweight and optimized for efficient performance.  
+- Simple and seamless integration with Flutter projects. 
 
 ---
 
