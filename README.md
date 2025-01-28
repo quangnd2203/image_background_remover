@@ -1,39 +1,64 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# Flutter Background Remover
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
+A Flutter package that removes the background from images using an ONNX model. The package provides a seamless way to perform image processing, leveraging the power of machine learning through ONNX Runtime.
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+---
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- Remove the background from images with high accuracy.
+- Lightweight and efficient implementation.
+- Easy integration with your Flutter project.
 
-## Getting started
+---
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
 
-## Usage
+## Getting Started
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+### 🚀 Prerequisites
 
-```dart
-const like = 'sample';
+Before using this package, ensure that the following dependencies are included in your `pubspec.yaml`:
+
+```yaml
+dependencies:
+  flutter_background_remover: ^latest_version
+  ```
+
+##  Usage
+# Initialization
+Before using the `removeBg` method, you must initialize the ONNX environment:
+
+    ```
+    import 'package:flutter_background_remover/flutter_background_remover.dart';
+
+    @override
+    void initState() {
+        super.initState();
+        BackgroundRemover.instance.initializeOrt();
+    }
+
+    ```
+
+# Remove Background
+To remove the background from an image:
+```
+import 'dart:typed_data';
+import 'package:flutter_background_remover/flutter_background_remover.dart';
+
+Uint8List imageBytes = /* Load your image bytes */;
+ui.Image resultImage = await BackgroundRemover.instance.removeBg(imageBytes);
+
 ```
 
-## Additional information
+## API
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+### Methods
+
+| Method                  | Description                                                                 | Parameters                      | Returns                           |
+|-------------------------|-----------------------------------------------------------------------------|---------------------------------|-----------------------------------|
+| `initializeOrt()`       | Initializes the ONNX runtime environment. Call this method once before using `removeBg`. | None                            | `Future<void>`                   |
+| `removeBg(Uint8List imageBytes)` | Removes the background from an image.                                     | `imageBytes` - The image in byte array format. | `Future<ui.Image>` - The processed image with the background removed. |
+
+
+## 🔗 Contributing
+Contributions are welcome! If you encounter any issues or have suggestions for improvements, feel free to create an issue or submit a pull request.
