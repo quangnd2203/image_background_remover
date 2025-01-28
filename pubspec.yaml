@@ -1,7 +1,7 @@
-name: flutter_background_remover
+name: image_background_remover
 description: "A Flutter package that removes the background from images using an ONNX model."
 version: 0.0.1
-homepage: https://github.com/Netesh5/flutter_background_remover/tree/main
+homepage: https://github.com/Netesh5/image_background_remover/tree/main
 
 environment:
   sdk: '>=3.2.0 <4.0.0'

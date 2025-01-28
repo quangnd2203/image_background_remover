@@ -24,7 +24,7 @@ Before using this package, ensure that the following dependencies are included i
 
 ```yaml
 dependencies:
-  flutter_background_remover: ^latest_version
+  image_background_remover: ^latest_version
   ```
 
 ##  Usage
@@ -32,7 +32,7 @@ dependencies:
 Before using the `removeBg` method, you must initialize the ONNX environment:
 
     ```
-    import 'package:flutter_background_remover/flutter_background_remover.dart';
+    import 'package:image_background_remover/image_background_remover.dart';
 
     @override
     void initState() {
@@ -46,7 +46,7 @@ Before using the `removeBg` method, you must initialize the ONNX environment:
 To remove the background from an image:
 ```
 import 'dart:typed_data';
-import 'package:flutter_background_remover/flutter_background_remover.dart';
+import 'package:image_background_remover/image_background_remover.dart';
 
 Uint8List imageBytes = /* Load your image bytes */;
 ui.Image resultImage = await BackgroundRemover.instance.removeBg(imageBytes);

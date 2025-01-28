@@ -2,7 +2,7 @@ import 'dart:ui' as ui;
 
 import 'package:example/image_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_background_remover/flutter_background_remover.dart';
+import 'package:image_background_remover/flutter_background_remover.dart';
 
 void main() {
   runApp(const MyApp());

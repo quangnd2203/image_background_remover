@@ -5,7 +5,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_background_remover/assets.dart';
+import 'package:image_background_remover/assets.dart';
 import 'package:onnxruntime/onnxruntime.dart';
 
 class BackgroundRemover {
