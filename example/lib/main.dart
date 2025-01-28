@@ -19,14 +19,27 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: MyHomePage(),
+      home: const MyHomePage(),
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  MyHomePage({super.key});
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
   final ValueNotifier<ui.Image?> outImg = ValueNotifier<ui.Image?>(null);
+
+  @override
+  void initState() {
+    BackgroundRemover.instance.initializeOrt();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
