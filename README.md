@@ -12,7 +12,7 @@ A Flutter package that removes the background from images using an ONNX model. T
 
 ---
 
-<img src="https://github.com/Netesh5/flutter_confusion_matrix/blob/main/overview.gif?raw=true" alt="Screenshot" width="300" height="600" />
+<img src="https://github.com/Netesh5/flutter_background_remover/blob/main/overview.gif?raw=true" alt="Screenshot" width="300" height="600" />
 
 
 ## Getting Started
