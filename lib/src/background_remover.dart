@@ -40,7 +40,7 @@ class BackgroundRemover {
 
       /// Path to the ONNX model file.
       const assetFileName =
-          'packages/flutter_background_remover/lib/assets/model.onnx';
+          '/Users/neteshpaudel/Projects/flutter_background_remover/assets/model.onnx';
 
       /// Load the model as a raw asset.
       final rawAssetFile = await rootBundle.load(assetFileName);
@@ -51,11 +51,11 @@ class BackgroundRemover {
       /// Create the ONNX session.
       _session = OrtSession.fromBuffer(bytes, sessionOptions);
       if (kDebugMode) {
-        log('ONNX session created successfully.');
+        log('ONNX session created successfully.', name: "BackgroundRemover");
       }
     } catch (e) {
       if (kDebugMode) {
-        log('Error creating ONNX session: $e');
+        log('Error creating ONNX session: $e', name: "BackgroundRemover");
       }
     }
   }
