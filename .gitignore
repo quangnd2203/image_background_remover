@@ -29,5 +29,5 @@ migrate_working_dir/
 build/
 
 /assets/
-/lib/assets.dart
+# /lib/assets.dart
 # /overview.gif
