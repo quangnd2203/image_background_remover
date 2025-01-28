@@ -1,5 +1,8 @@
+import 'dart:ui' as ui;
+
 import 'package:example/image_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_background_remover/flutter_background_remover.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,14 +19,14 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(),
+      home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
-
+  MyHomePage({super.key});
+  final ValueNotifier<ui.Image?> outImg = ValueNotifier<ui.Image?>(null);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,8 +60,37 @@ class MyHomePage extends StatelessWidget {
                           height: 20,
                         ),
                         TextButton(
-                            onPressed: () {},
-                            child: const Text('Remove Background'))
+                          onPressed: () async {
+                            outImg.value = await BackgroundRemover.instance
+                                .removeBg(image.readAsBytesSync());
+                          },
+                          child: const Text('Remove Background'),
+                        ),
+                        ValueListenableBuilder(
+                          valueListenable: outImg,
+                          builder: (context, img, _) {
+                            return img == null
+                                ? const SizedBox()
+                                : FutureBuilder(
+                                    future: img
+                                        .toByteData(
+                                            format: ui.ImageByteFormat.png)
+                                        .then((value) =>
+                                            value!.buffer.asUint8List()),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return const CircularProgressIndicator();
+                                      } else if (snapshot.connectionState ==
+                                          ConnectionState.done) {
+                                        return Image.memory(snapshot.data!);
+                                      } else {
+                                        return const Text('Error');
+                                      }
+                                    },
+                                  );
+                          },
+                        ),
                       ],
                     ),
             ),
