@@ -13,7 +13,7 @@ A Flutter package that removes the background from images using an ONNX model. T
 ---
 
 
-![Image](https://github.com/user-attachments/assets/a306cec8-82eb-482a-92d4-d5d99603aebc)
+![Image](https://github.com/user-attachments/assets/a306cec8-82eb-482a-92d4-d5d99603aebc=300x600)
 
 
 ## Getting Started
