@@ -30,4 +30,4 @@ build/
 
 /assets/
 /lib/assets.dart
-/overview.gif
+# /overview.gif
