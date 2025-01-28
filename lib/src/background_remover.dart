@@ -39,7 +39,8 @@ class BackgroundRemover {
       final sessionOptions = OrtSessionOptions();
 
       /// Path to the ONNX model file.
-      const assetFileName = 'assets/u2netp.onnx';
+      const assetFileName =
+          'packages/flutter_background_remover/lib/assets/model.onnx';
 
       /// Load the model as a raw asset.
       final rawAssetFile = await rootBundle.load(assetFileName);
