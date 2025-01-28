@@ -1,3 +1,8 @@
+## 0.0.3
+
+### Added
+- Added assets file.
+
 ## 0.0.2
 
 ### Fix
@@ -12,7 +17,7 @@
   - `initializeOrt()`: Initialize the ONNX environment and session.
 - Image processing capabilities:
   - `removeBg(Uint8List imageBytes)`: Removes the background from an input image and returns the image with a transparent background.
-  - `_resizeImage()`: Resizes an image to 320x320 for ONNX model compatibility.
+  - `_resizeImage()`: Resizes an image to 320x320 for ONNXy model compatibility.
   - `_imageToFloatTensor()`: Converts RGBA image data into a normalized float tensor for model input.
   - `_applyMaskToOriginalSizeImage()`: Applies the generated mask back to the original image size.
 - Utility methods:
