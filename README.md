@@ -12,7 +12,8 @@ A Flutter package that removes the background from images using an ONNX model. T
 
 ---
 
-<img src="https://github.com/Netesh5/flutter_background_remover/main/overview.gif?raw=true" alt="Screenshot" width="300" height="600" />
+
+![Image](https://github.com/user-attachments/assets/a306cec8-82eb-482a-92d4-d5d99603aebc)
 
 
 ## Getting Started
