@@ -64,5 +64,15 @@ ui.Image resultImage = await BackgroundRemover.instance.removeBg(imageBytes);
 | `removeBg(Uint8List imageBytes)` | Removes the background from an image.                                     | `imageBytes` - The image in byte array format. | `Future<ui.Image>` - The processed image with the background removed. |
 
 
+## ⚠️ Warning
+
+This package uses an offline model to process images, which is bundled with the application. **This may increase the size of your app** depending on the size of the model file. 
+
+### Recommendations:
+- Ensure your app has sufficient storage capacity for the increased size.
+- Regularly optimize your app's assets and resources to minimize its footprint.
+
+
+
 ## 🔗 Contributing
 Contributions are welcome! If you encounter any issues or have suggestions for improvements, feel free to create an issue or submit a pull request.
