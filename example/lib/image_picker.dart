@@ -10,7 +10,7 @@ class ImagePickerService {
 
   static ValueNotifier<File?> pickedFile = ValueNotifier(null);
 
-  static Future pickImage(BuildContext context) async {
+  static Future pickImage() async {
     try {
       final file = await imagePicker.pickImage(source: ImageSource.gallery);
       if (file == null) {

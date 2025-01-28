@@ -33,7 +33,36 @@ class MyHomePage extends StatelessWidget {
       body: ValueListenableBuilder(
         valueListenable: ImagePickerService.pickedFile,
         builder: (context, image, _) {
-          return Container();
+          return GestureDetector(
+            onTap: () async {
+              await ImagePickerService.pickImage();
+            },
+            child: Container(
+              alignment: Alignment.center,
+              child: image == null
+                  ? const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.image,
+                          size: 100,
+                        ),
+                        Text('No image selected.'),
+                      ],
+                    )
+                  : Column(
+                      children: [
+                        Image.file(image),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        TextButton(
+                            onPressed: () {},
+                            child: const Text('Remove Background'))
+                      ],
+                    ),
+            ),
+          );
         },
       ),
     );
