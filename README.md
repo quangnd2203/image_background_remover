@@ -40,7 +40,6 @@ Before using the `removeBg` method, you must initialize the ONNX environment:
         super.initState();
         BackgroundRemover.instance.initializeOrt();
     }
-
     ```
 
 # Remove Background
