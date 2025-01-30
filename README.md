@@ -31,7 +31,6 @@ dependencies:
 ##  Usage
 # Initialization
 Before using the `removeBg` method, you must initialize the ONNX environment:
-
     ```
     import 'package:image_background_remover/image_background_remover.dart';
 
@@ -51,6 +50,8 @@ import 'package:image_background_remover/image_background_remover.dart';
 
 Uint8List imageBytes = /* Load your image bytes */;
 ui.Image resultImage = await BackgroundRemover.instance.removeBg(imageBytes);
+/* resultImage will contain image with transparent background*/
+
 
 ```
 
