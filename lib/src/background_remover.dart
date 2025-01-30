@@ -60,8 +60,20 @@ class BackgroundRemover {
 
   /// Removes the background from an image.
   ///
+  /// This function processes the input image and removes its background,
+  /// returning a new image with the background removed.
+  ///
   /// - [imageBytes]: The input image as a byte array.
   /// - Returns: A [ui.Image] with the background removed.
+  ///
+  /// Example usage:
+  /// ```dart
+  /// final imageBytes = await File('path_to_image').readAsBytes();
+  /// final ui.Image imageWithoutBackground = await removeBackground(imageBytes);
+  /// ```
+  ///
+  /// Note: This function may take some time to process depending on the size
+  /// and complexity of the input image.
   Future<ui.Image> removeBg(Uint8List imageBytes) async {
     if (_session == null) {
       throw Exception("ONNX session not initialized");
