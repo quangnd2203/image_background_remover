@@ -179,4 +179,18 @@ class BackgroundRemover {
 
     return completer.future;
   }
+
+  Future<ui.Image> addBackground(
+      {required ui.Image image, required Color bgColor}) {
+    final recorder = ui.PictureRecorder();
+    final canvas = Canvas(recorder);
+    final paint = Paint();
+    paint.color = bgColor;
+    canvas.drawRect(
+        Rect.fromLTWH(0, 0, image.width.toDouble(), image.height.toDouble()),
+        paint);
+    canvas.drawImage(image, Offset.zero, paint);
+    final picture = recorder.endRecording();
+    return picture.toImage(image.width, image.height);
+  }
 }
