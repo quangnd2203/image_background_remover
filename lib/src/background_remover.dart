@@ -136,6 +136,74 @@ class BackgroundRemover {
     }
   }
 
+    /// Removes the background from an image.
+  ///
+  /// This function processes the input image and removes its background,
+  /// returning a new image with the background removed.
+  ///
+  /// - [imageBytes]: The input image as a byte array.
+  /// - [threshold]: The threshold value for foreground/background separation (default: 0.5).
+  /// - [smoothMask]: Whether to apply smoothing to the output mask (default: true).
+  /// - Returns: A [ui.Image] with the background removed.
+  ///
+  /// Example usage:
+  /// ```dart
+  /// final imageBytes = await File('path_to_image').readAsBytes();
+  /// final ui.Image imageWithoutBackground = await removeBackground(imageBytes);
+  /// ```
+  ///
+  /// Note: This function may take some time to process depending on the size
+  /// and complexity of the input image.
+  Future<List<dynamic>> segment(
+    Uint8List imageBytes, {
+    double threshold = 0.5,
+    bool smoothMask = true,
+    bool enhanceEdges = true,
+  }) async {
+    if (_session == null) {
+      throw Exception("ONNX session not initialized");
+    }
+
+    /// Decode the input image
+    final originalImage = await decodeImageFromList(imageBytes);
+    log('Original image size: ${originalImage.width}x${originalImage.height}');
+
+    final resizedImage = await _resizeImage(originalImage, 320, modelSize);
+
+    /// Convert the resized image into a tensor format required by the ONNX model.
+    final rgbFloats = await _imageToFloatTensor(resizedImage);
+    final inputTensor = OrtValueTensor.createTensorWithDataList(
+      Float32List.fromList(rgbFloats),
+      [1, 3, modelSize, modelSize],
+    );
+
+    /// Prepare the inputs and run inference on the ONNX model.
+    final inputs = {'input.1': inputTensor};
+    final runOptions = OrtRunOptions();
+    final outputs = await _session!.runAsync(runOptions, inputs);
+    inputTensor.release();
+    runOptions.release();
+
+    /// Process the output tensor and generate the final image with the background removed.
+    final outputTensor = outputs?[0]?.value;
+    if (outputTensor is List) {
+      final mask = outputTensor[0][0];
+
+      /// Generate and refine the mask
+      final resizedMask = smoothMask
+          ? resizeMaskBilinear(mask, originalImage.width, originalImage.height)
+          : resizeMaskNearest(mask, originalImage.width, originalImage.height);
+
+      /// Apply edge enhancement if requested
+      final finalMask = enhanceEdges
+          ? await _enhanceMaskEdges(originalImage, resizedMask)
+          : resizedMask;
+      return finalMask;
+    } else {
+      throw Exception('Unexpected output format from ONNX model.');
+    }
+  }
+
   /// Resizes the input image to the specified dimensions.
   Future<ui.Image> _resizeImage(
       ui.Image image, int targetWidth, int targetHeight) async {
